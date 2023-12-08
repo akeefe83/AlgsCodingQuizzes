@@ -1,0 +1,93 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+
+    /*
+     * Complete the 'weightedUniformStrings' function below.
+     *
+     * The function is expected to return a STRING_ARRAY.
+     * The function accepts following parameters:
+     *  1. STRING s
+     *  2. INTEGER_ARRAY queries
+     */
+
+    public static List<String> weightedUniformStrings(String s, List<Integer> queries) {
+    // Write your code here
+        String [] alpha = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+        List<String> alphabet = Arrays.asList(alpha);
+        List<String> answer = new ArrayList<String>();
+        List<Integer> uniformWeights = new ArrayList<Integer>();
+        int weight = 0;
+        for (int i = 0; i < s.length()-1; i++){
+            if (s.charAt(i) != s.charAt(i+1)){
+                String search = Character.toString(s.charAt(i));
+                uniformWeights.add(weight + alphabet.indexOf(search) + 1);
+                weight = 0;
+            }
+            else{
+                String search = Character.toString(s.charAt(i));
+                weight = weight + alphabet.indexOf(search) + 1;
+            }
+        }
+        for (int w = 0; w < queries.size(); w++){
+            int check = answer.size();
+            for (int x = 0; x < uniformWeights.size(); x++){
+                if (queries.get(w) == uniformWeights.get(x)){
+                    answer.add("Yes");
+                    break;
+                }
+                else{
+                    continue;
+                }
+            }
+            if (check == answer.size()){
+                answer.add("No");
+            }
+        }
+        return answer;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String s = bufferedReader.readLine();
+
+        int queriesCount = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<Integer> queries = IntStream.range(0, queriesCount).mapToObj(i -> {
+            try {
+                return bufferedReader.readLine().replaceAll("\\s+$", "");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        })
+            .map(String::trim)
+            .map(Integer::parseInt)
+            .collect(toList());
+
+        List<String> result = Result.weightedUniformStrings(s, queries);
+
+        bufferedWriter.write(
+            result.stream()
+                .collect(joining("\n"))
+            + "\n"
+        );
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}

@@ -1,0 +1,7 @@
+Mini Max Sum:
+
+	The time complexity of Mini Max Sum is currently O(n) as we ignore the multiplier for the number of times that we run through the array. It runs in O(n) because it is dependent on the size of its input array. The space complexity is O(1) as only integers are created to track values, no new arrays or lists are initialized.
+
+Weighted Uniform Strings:
+
+	This is currently not working with the way I have it written, but does still currently have a runtime of O(n^2), since to check if a value is included within the set of uniform weights the list compares its values to the queries given to it, having to do that for each value in the uniform weight list a number of n times for the queries passed to it. The space complexity is O(n) since there are multiple arrays created of length equal to the input length.
